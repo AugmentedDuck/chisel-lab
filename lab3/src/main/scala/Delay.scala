@@ -7,11 +7,19 @@ class Delay extends Module {
   })
 
   val res = Wire(UInt())
+  val res1 = Wire(UInt())
 
   // ***** your code starts here *****
 
+  val valReg1 = RegInit(0.U)
+  val valReg2 = RegInit(0.U)
+
+  valReg1 := io.din
+  res1 := valReg1 
+  valReg2 := res1
+
   // below is dummy code to make this example compile
-  res := io.din
+  res := valReg2
 
   // ***** your code ends here *****
 

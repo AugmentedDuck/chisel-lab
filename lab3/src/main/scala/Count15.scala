@@ -9,8 +9,12 @@ class Count15 extends Module {
 
   // ***** your code starts here *****
 
-  res := 0.U // dummy code to make it compile
+  val valReg = RegInit(0.U(4.W))
 
+  valReg := res + 1.U
+  res := valReg
+
+  
   // ***** your code ends here *****
 
   io.dout := res

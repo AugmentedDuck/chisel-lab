@@ -8,8 +8,10 @@ class Count6 extends Module {
   val res = Wire(UInt())
 
   // ***** your code starts here *****
+  val valReg = RegInit(0.U(3.W))
 
-  res := 0.U // dummy code to make it compile
+  valReg := Mux(valReg === 6.U, 0.U, valReg + 1.U)
+  res := valReg
 
   // ***** your code ends here *****
 
