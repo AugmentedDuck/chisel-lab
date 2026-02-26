@@ -71,7 +71,7 @@ val io = IO(new Bundle {
 
 The capacity of the component is limited to fit 8 numbers in the internal sequence. The empty and full flags are used to signal that none or 8 numbers are in the sequence, respectively.
 
-The ready and valid flags are used to coordinate communication between the component and the outside world. When the component is not busy, it asserts `io.ready` and all output signals are considered stable. 
+The ready and valid flags are used to coordinate communication between the component and the outside world. When the component is not busy, it asserts `io.ready` and all output signals should be stable and valid (e.g. `io.root` is valid when `io.ready` is asserted). 
 
 When the outside world wants to issue an operation, it asserts `io.valid` and indicates the type of operation at the same time on `io.op`. If the operation is an insertion, the new number is provided on `io.newValue` which is 8-bit wide.
 
@@ -81,7 +81,7 @@ The following timing diagram visualizes the issuing of operations using the read
 
 ![Timing Diagram](../figures/heap_timing.svg)
 
-The operation types are referred to using `Operation.Insert` and `Operation.RemoveRoot` in Chisel. In the test code, you can simply apply these when poking `io.op`:
+The operation types are referred to using `Operation.Insert` and `Operation.RemoveRoot` in Chisel. In the test code, you can simply use these when poking `io.op`:
 
 ```scala
 dut.io.op.poke(Operation.Insert)
@@ -100,8 +100,8 @@ You can now write test code to verify the correct behavior of the component. The
 
 ### Hints
 
-Once you observe a data integrity error in your tests, take a look at `src/main/scala/heap/HeapMemory.scala` and try to find the error.
+Once you observe a data integrity error in your tests, take a look at `src/main/scala/heap/HeapMemory.scala:45` and try to find the error.
 
-Once you observe an issue with the empty/full flags, take a look at `src/main/scala/heap/HeapControl.scala` to find the error.
+Once you observe an issue with the empty/full flags, take a look at `src/main/scala/heap/HeapControl.scala:47` to find the error.
 
 

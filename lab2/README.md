@@ -58,13 +58,14 @@ sbt test
 ```
 to compile and test your project.
 
-In the *Run* window you should see several tests failing, similar to:
+In the *Run* window, you should see several tests failing, similar to:
 ```
-[info] *** 4 TESTS FAILED ***
-[error] Failed: Total 6, Failed 4, Errors 0, Passed 2
+[info] Suites: completed 7, aborted 0
+[info] Tests: succeeded 2, failed 5, canceled 0, ignored 0, pending 0
+[info] *** 5 TESTS FAILED ***
 ```
 
-For the majority circuit we provide three *tests*:
+For the majority circuit, we provide three *tests*:
 
  1. ```MajorityPrinter```: A test that simply prints the logic table of the
    circuit. This form of test is helpful for debugging, but not for
