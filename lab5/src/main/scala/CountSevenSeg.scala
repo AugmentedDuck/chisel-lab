@@ -9,7 +9,14 @@ class CountSevenSeg extends Module {
   val sevSeg = WireDefault("b1111111".U(7.W))
 
   // *** your code starts here
+  val countReg = RegInit(0.U(4.W))
 
+  countReg := Mux(countReg === 9.U, 0.U, countReg + 1.U)
+
+  val sevenSegDecoder = Module(new SevenSegDecoder())
+
+  sevenSegDecoder.io.sw := countReg
+  sevSeg := sevenSegDecoder.io.seg
 
   // *** your code ends here
 

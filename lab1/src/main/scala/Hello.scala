@@ -8,21 +8,33 @@
 
 import chisel3._
 
-class Hello extends Module {
-  val io = IO(new Bundle {
-    val led = Output(UInt(1.W))
+class X extends Module {
+  val io = IO(new Bundle{
+    val in = Flipped(new DecoupledIO(UInt(8.W)))
+    val out = new DecoupledIO(UInt(8.W))
   })
-  val CNT_MAX = (50000 / 2 - 1).U
-  
-  val cntReg = RegInit(0.U(32.W))
-  val blkReg = RegInit(0.U(1.W))
 
-  cntReg := cntReg + 1.U
-  when(cntReg === CNT_MAX) {
-    cntReg := 0.U
-    blkReg := ~blkReg
+  val dataReg = RegInit(0.U(8.W))
+  val emptyReg = RegInit(true.B)
+
+  io.in.ready := emptyReg
+  io.out.valid := !emptyReg
+  io.out.bits := dataReg
+
+  when (emptyReg & io.in.valid) {
+    dataReg := io.in.bits
+    emptyReg := false.B
   }
-  io.led := blkReg
+
+  when (!emptyReg & io.out.ready) {
+    emptyReg := true.B
+  }
+}
+
+class DecoupledIO[T <: Data](gen: T) extends Bundle {
+  val ready = Input(Bool())
+  val valid = Output(Bool())
+  val bits = Output(gen)
 }
 
 /**
@@ -30,5 +42,5 @@ class Hello extends Module {
  */
 object HelloMain extends App {
   println("Hello World, I will now generate the Verilog file!")
-  emitVerilog(new Hello())
+  emitVerilog(new X())
 }
